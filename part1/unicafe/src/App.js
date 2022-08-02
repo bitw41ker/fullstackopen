@@ -9,6 +9,10 @@ function App() {
     setFeedbackFunc(current + 1);
   };
 
+  const feedbackCount = () => good + neutral + bad;
+  const average = () => feedbackCount() !== 0 ? (good - bad) / feedbackCount() : 0;
+  const positive = () => feedbackCount() !== 0 ? good / feedbackCount() * 100 : 0;
+
   return (
     <div className="App">
       <h1>Give Feedback</h1>
@@ -22,6 +26,9 @@ function App() {
       <p>Good: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Bad: {bad}</p>
+      <p>All: {feedbackCount()}</p>
+      <p>Average: {average()}</p>
+      <p>Positive: {positive()} % </p>
     </div>
   );
 }
