@@ -8,21 +8,37 @@ function Statistics({ good, neutral, bad }) {
   if(good > 0 || neutral > 0 || bad > 0) {
     return (
       <div>
-        <p>Good: {good}</p>
-        <p>Neutral: {neutral}</p>
-        <p>Bad: {bad}</p>
-        <p>All: {feedbackCount()}</p>
-        <p>Average: {average()}</p>
-        <p>Positive: {positive()} % </p>
+        <StatisticLine text={`Good ${good}`} />
+        <StatisticLine text={`Neutral ${neutral}`} />
+        <StatisticLine text={`Bad ${bad}`}/>
+        <StatisticLine text={`All ${feedbackCount()}`} />
+        <StatisticLine text={`Average ${average()}`} />
+        <StatisticLine text={`Positive ${positive()} %`} />
       </div>
-    )
+    );
   }
 
   return (
     <div>
       <p>No feedback given.</p>
     </div>
-  )
+  );
+}
+
+function Button({ setFeedback, feedbackCount, text }) {
+  return (
+    <div>
+      <button onClick={() => setFeedback(feedbackCount + 1)}>{text}</button>
+    </div>
+  );
+}
+
+function StatisticLine({ text }) {
+  return (
+    <div>
+      <p>{text}</p>
+    </div>
+  );
 }
 
 function App() {
@@ -30,17 +46,12 @@ function App() {
   const [neutral,setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-  const handleClick = (setFeedbackFunc, current) => () => {
-    setFeedbackFunc(current + 1);
-  };
-
   return (
     <div className="App">
       <h1>Give Feedback</h1>
-
-      <button onClick={handleClick(setGood, good)}>good</button>
-      <button onClick={handleClick(setNeutral, neutral)}>neutral</button>
-      <button onClick={handleClick(setBad, bad)}>bad</button>
+      <Button setFeedback={setGood} feedbackCount={good} text={"good"} />
+      <Button setFeedback={setNeutral} feedbackCount={neutral} text={"neutral"} />
+      <Button setFeedback={setBad} feedbackCount={bad} text={"bad"} />
 
       <h1>Statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad}/>
