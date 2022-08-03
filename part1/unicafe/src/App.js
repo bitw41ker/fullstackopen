@@ -7,14 +7,28 @@ function Statistics({ good, neutral, bad }) {
   
   if(good > 0 || neutral > 0 || bad > 0) {
     return (
-      <div>
-        <StatisticLine text={`Good ${good}`} />
-        <StatisticLine text={`Neutral ${neutral}`} />
-        <StatisticLine text={`Bad ${bad}`}/>
-        <StatisticLine text={`All ${feedbackCount()}`} />
-        <StatisticLine text={`Average ${average()}`} />
-        <StatisticLine text={`Positive ${positive()} %`} />
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <StatisticLine text={"Good"} value={good}/>
+          </tr>
+          <tr>
+            <StatisticLine text={"Neutral"} value={neutral} />
+          </tr>
+          <tr>
+            <StatisticLine text={"Bad"} value={bad}/>
+          </tr>
+          <tr>
+            <StatisticLine text={"All"} value={feedbackCount()} />
+          </tr>
+          <tr>
+            <StatisticLine text={"Average"} value={average()} />
+          </tr>
+          <tr>
+            <StatisticLine text={"Positive"} value={`${positive()} %`} />
+          </tr>
+        </tbody>
+      </table>
     );
   }
 
@@ -33,11 +47,16 @@ function Button({ setFeedback, feedbackCount, text }) {
   );
 }
 
-function StatisticLine({ text }) {
+function StatisticLine({ text, value }) {
   return (
-    <div>
-      <p>{text}</p>
-    </div>
+    <>
+      <td>
+        {text}
+      </td>
+      <td>
+        {value}
+      </td>
+    </>
   );
 }
 
