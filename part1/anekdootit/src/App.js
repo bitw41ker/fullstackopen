@@ -24,18 +24,37 @@ const App = () => {
     setVote(newVotes); 
   }
 
+  const getMostVotedAnecdote = () => {
+    let mostVotedInd = 0;
+
+    votes.forEach((voteCount, ind) => {
+      if (voteCount > votes[mostVotedInd])
+        mostVotedInd = ind;
+    });
+
+    return mostVotedInd;
+  }
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <br />
+
       Has {votes[selected]} votes
       <br />
+
       <button onClick={() => vote(selected)}>
         Vote
       </button>
+      
       <button onClick={getRandomAnecdote}>
         Random anecdote
       </button>
+
+      <h1>Anecdote with most votes</h1>
+      {anecdotes[getMostVotedAnecdote()]}
+      
     </div>
   )
 }
