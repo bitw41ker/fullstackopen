@@ -1,6 +1,6 @@
 import CountryInfo from './CountryInfo'
 
-const Countries = ({countries, filterValue}) => {
+const Countries = ({countries, filterValue, handleValue}) => {
   const filteredCountries = countries.filter(country =>
     country.name.common.toLowerCase().includes(filterValue.toLowerCase())
   );
@@ -15,6 +15,7 @@ const Countries = ({countries, filterValue}) => {
     filteredCountries.map((country, i) =>
       <div key={i}>
         {country.name.common}
+        <button onClick={handleValue} id={country.name.common}>Show</button>
       </div>
     )
   );

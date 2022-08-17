@@ -27,6 +27,7 @@ const App = () => {
       <Countries
         countries={countries}
         filterValue={filterValue}
+        handleValue={(event) => setFilterValue(event.target.id)}
       />
     </div>
   );
