@@ -1,3 +1,6 @@
+import Weather from './Weather';
+
+
 const CountryInfo = ({country}) => {
   const langs = [];
 
@@ -9,7 +12,8 @@ const CountryInfo = ({country}) => {
 
   const langListItems = langs.map((language, i) =>
       <li key={i}>{language}</li>
-  )
+  );
+
 
   return (
     <div>
@@ -21,6 +25,8 @@ const CountryInfo = ({country}) => {
         {langListItems}
       </ul>
       <img src={country.flags.svg} alt="Country flag" width={200} height={100}/>
+      <br />
+      <Weather city={country.capital[0]} />
     </div>
   );
 }
