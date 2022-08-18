@@ -38,7 +38,19 @@ const App = () => {
       .create(newPerson)
       .then(createdPerson => {
         setPersons(persons.concat(createdPerson));
-      })
+      });
+  }
+
+  const deletePerson = (event) => {
+    if(!window.confirm(`Delete ${event.target.parentElement.id}?`)) return;
+
+    personService
+      .remove(event.target.id)
+      .then(() => {
+        setPersons(persons.filter(person => {
+          return person.id != event.target.id;
+        }));
+      });
   }
 
   return (
@@ -61,7 +73,11 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons persons={persons} filterValue={filterValue}/>
+      <Persons
+        persons={persons}
+        filterValue={filterValue}
+        handleDelete={deletePerson}
+      />
     </div>
   );
 
