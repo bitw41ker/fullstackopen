@@ -21,24 +21,41 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    if(persons.some(person => person.name === newName)) {
-      window.alert(`${newName} is already added to phonebook`);
-      return;
-    }
-
     const newPerson = {
       name: newName,
       number: newNumber
     }
 
-    setNewName('');
-    setNewNumber('');
-    
-    personService
+    const foundPerson = persons.find(person => person.name === newName);
+
+    if(!foundPerson) {
+      personService
       .create(newPerson)
       .then(createdPerson => {
         setPersons(persons.concat(createdPerson));
       });
+    } else {
+      const replaceNumber = window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`);
+
+      if(!replaceNumber)
+        return;
+      
+      newPerson.id = foundPerson.id;
+
+      personService
+        .update(newPerson)
+        .then(updatedPerson => {
+          console.log(updatedPerson);
+          setPersons(
+            persons
+              .filter(person => person.name !== newName)
+              .concat(updatedPerson)
+          );
+        });
+    }
+    
+    setNewName('');
+    setNewNumber('');
   }
 
   const deletePerson = (event) => {
