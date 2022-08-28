@@ -3,12 +3,14 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import personService from './services/persons';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterValue, setNewFilterValue] = useState('');
+  const [notificationMessage, setNotificationMessage] = useState(null);
 
   useEffect(() => {
     personService
@@ -18,6 +20,10 @@ const App = () => {
       });
   }, []);
 
+  const notify = (message) => {
+    setNotificationMessage(message);
+    setTimeout(() => setNotificationMessage(null), 3000);
+  }
   const addPerson = (event) => {
     event.preventDefault();
 
@@ -30,10 +36,12 @@ const App = () => {
 
     if(!foundPerson) {
       personService
-      .create(newPerson)
-      .then(createdPerson => {
-        setPersons(persons.concat(createdPerson));
-      });
+        .create(newPerson)
+        .then(createdPerson => {
+          setPersons(persons.concat(createdPerson));
+        });
+
+      notify(`Added ${newName}`);
     } else {
       const replaceNumber = window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`);
 
@@ -52,10 +60,14 @@ const App = () => {
               .concat(updatedPerson)
           );
         });
+      
+      notify(`Changed phone number for ${newName} to ${newNumber}`);
     }
     
     setNewName('');
     setNewNumber('');
+
+    
   }
 
   const deletePerson = (event) => {
@@ -68,11 +80,14 @@ const App = () => {
           return person.id != event.target.id;
         }));
       });
+    
+      notify(`Deleted ${event.target.parentElement.id}`);
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
       <Filter
         value={filterValue}
         handleValue={(event) => setNewFilterValue(event.target.value)}
