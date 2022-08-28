@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterValue, setNewFilterValue] = useState('');
-  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     personService
@@ -20,9 +20,9 @@ const App = () => {
       });
   }, []);
 
-  const notify = (message) => {
-    setNotificationMessage(message);
-    setTimeout(() => setNotificationMessage(null), 3000);
+  const notify = (message, error) => {
+    setNotification({message, error});
+    setTimeout(() => setNotification(null), 3000);
   }
   const addPerson = (event) => {
     event.preventDefault();
@@ -59,15 +59,17 @@ const App = () => {
               .filter(person => person.name !== newName)
               .concat(updatedPerson)
           );
+
+          notify(`Changed phone number for ${newName} to ${newNumber}`);
+        })
+        .catch(error => {
+          notify(`Information of ${event.target.parentElement.id} has already been removed from server`, true);
+          setPersons(persons.filter(person => person.name !== newName));
         });
-      
-      notify(`Changed phone number for ${newName} to ${newNumber}`);
     }
     
     setNewName('');
     setNewNumber('');
-
-    
   }
 
   const deletePerson = (event) => {
@@ -75,19 +77,22 @@ const App = () => {
 
     personService
       .remove(event.target.id)
-      .then(() => {
+      .then(() => notify(`Deleted ${event.target.parentElement.id}`))
+      .catch(error => {
+        notify(`Information of ${event.target.parentElement.id} has already been removed from server`, true);
+      })
+      .finally(() => {
         setPersons(persons.filter(person => {
           return person.id != event.target.id;
         }));
       });
-    
-      notify(`Deleted ${event.target.parentElement.id}`);
+
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={notification} />
       <Filter
         value={filterValue}
         handleValue={(event) => setNewFilterValue(event.target.value)}
