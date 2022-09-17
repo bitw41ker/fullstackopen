@@ -47,4 +47,16 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
+app.delete('/api/persons/:id', (req, res) => {
+  const index = persons.findIndex((el) => el.id === Number(req.params.id));
+  if(index > -1) {
+    persons.splice(index, 1);
+    res.status(204).end();
+  }
+  else {
+    res.status(404).end();
+  }
+
+})
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
