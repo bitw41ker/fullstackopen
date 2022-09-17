@@ -1,6 +1,7 @@
-const { request, application } = require('express');
+const { request, application, response } = require('express');
 const express = require('express');
 const app = express();
+app.use(express.json());
 
 const PORT = 3001;
 let persons = [
@@ -58,5 +59,19 @@ app.delete('/api/persons/:id', (req, res) => {
   }
 
 })
+
+app.post('/api/persons', (req, res) => {
+  const {name, number} = req.body;
+  if(!name || !number) {
+    return res.status(400).json({error: 'content missing'});
+  }
+  const person = {
+    name,
+    number,
+    id: Math.floor(Math.random() * 1000000000)
+  }
+  persons.push(person);
+  res.status(201).end();
+ })
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
