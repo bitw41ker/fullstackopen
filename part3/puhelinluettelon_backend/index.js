@@ -63,6 +63,29 @@ app.post('/api/persons', (req, res) => {
   person.save().then(() => res.status(201).json(person));
 });
 
+app.put('/api/persons/:id', (req, res) => {
+  const { name, number } = req.body;
+
+  const newPerson = { name, number };
+
+  if (!name || !number) {
+    return res.status(400).json({ error: 'content missing' });
+  }
+
+  Person.findByIdAndUpdate(req.params.id, newPerson, { new: true })
+    .then((updatedPerson) => {
+      if (updatedPerson) return res.json(updatedPerson);
+      else {
+        const person = new Person(newPerson);
+        person
+          .save()
+          .then(() => res.status(201).json(person))
+          .catch((error) => (error) => next(error));
+      }
+    })
+    .catch((error) => (error) => next(error));
+});
+
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
