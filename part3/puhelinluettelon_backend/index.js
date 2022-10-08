@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
-const cors = require('cors');
 const Person = require('./models/person');
 
 const app = express();
@@ -11,7 +10,6 @@ morgan.token('body', (req, res) => {
 });
 
 app.use(express.static('build'));
-app.use(cors());
 app.use(express.json());
 app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body')
@@ -41,13 +39,9 @@ app.get('/api/persons/:id', (req, res) => {
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-  const index = persons.findIndex((el) => el.id === Number(req.params.id));
-  if (index > -1) {
-    persons.splice(index, 1);
-    res.status(204).end();
-  } else {
-    res.status(404).end();
-  }
+  Person.findByIdAndRemove(req.params.id)
+    .then(() => res.status(204).end())
+    .catch((error) => console.log(error));
 });
 
 app.post('/api/persons', (req, res) => {
