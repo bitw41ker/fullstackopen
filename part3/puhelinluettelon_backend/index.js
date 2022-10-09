@@ -6,7 +6,7 @@ const Person = require('./models/person');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-morgan.token('body', (req, res) => {
+morgan.token('body', (req) => {
   if (req.method === 'POST') return JSON.stringify(req.body);
 });
 
@@ -32,7 +32,7 @@ app.get('/api/persons', (req, res) => {
   Person.find({}).then((results) => res.json(results));
 });
 
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
   Person.countDocuments()
     .then((count) => {
       const responseString = `Phonebook has info for ${count} people
@@ -58,7 +58,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
     .then(() => res.status(204).end())
-    .catch((error) => (error) => next(error));
+    .catch((error) => next(error));
 });
 
 app.post('/api/persons', (req, res, next) => {
