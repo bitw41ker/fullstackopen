@@ -83,7 +83,11 @@ app.put('/api/persons/:id', (req, res, next) => {
     return res.status(400).json({ error: 'content missing' });
   }
 
-  Person.findByIdAndUpdate(req.params.id, newPerson, { new: true })
+  Person.findByIdAndUpdate(req.params.id, newPerson, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  })
     .then((updatedPerson) => {
       if (updatedPerson) return res.json(updatedPerson);
       else {

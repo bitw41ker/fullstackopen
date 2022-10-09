@@ -65,8 +65,7 @@ const App = () => {
           notify(`Changed phone number for ${newName} to ${newNumber}`);
         })
         .catch(error => {
-          notify(`Information of ${event.target.parentElement.id} has already been removed from server`, true);
-          setPersons(persons.filter(person => person.name !== newName));
+          notify(error.response.data.error, true);
         });
     }
     
