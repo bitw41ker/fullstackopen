@@ -10,7 +10,8 @@
     "build:ui": "rm -rf build && cd ../puhelinluettelo/ && npm run build && cp -r build ../puhelinluettelon_backend",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "fly logs"
+    "logs:prod": "fly logs",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.25.0",
     "nodemon": "^2.0.19",
     "prettier": "2.7.1"
   }
