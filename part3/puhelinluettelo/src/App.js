@@ -38,10 +38,12 @@ const App = () => {
       personService
         .create(newPerson)
         .then(createdPerson => {
+          notify(`Added ${newName}`);
           setPersons(persons.concat(createdPerson));
-        });
+        })
+        .catch((error) => notify(error.response.data.error, true));
 
-      notify(`Added ${newName}`);
+      
     } else {
       const replaceNumber = window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`);
 
