@@ -16,8 +16,29 @@ const favoriteBlog = (blogs) => {
   return mostLikesBlog;
 };
 
+const mostBlogs = (blogs) => {
+  const authors = new Map();
+  let mostBlogsAuthor = { author: '', blogs: 0 };
+
+  blogs.forEach((blog) => {
+    let blogsCount = authors.get(blog.author);
+    if (blogsCount) {
+      authors.set(blog.author, blogsCount + 1);
+    } else {
+      authors.set(blog.author, 1);
+    }
+  });
+  authors.forEach((blogsCount, author) => {
+    if (blogsCount > mostBlogsAuthor.blogs) {
+      mostBlogsAuthor = { author, blogs: blogsCount };
+    }
+  });
+  return mostBlogsAuthor;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 };

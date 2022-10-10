@@ -1,5 +1,7 @@
 const listHelper = require('../utils/list_helper');
 
+const emptyList = [];
+
 const listWithOneBlog = [
   {
     _id: '5a422aa71b54a676234d17f8',
@@ -92,5 +94,20 @@ describe('favorite blog', () => {
       likes: 12,
       __v: 0,
     });
+  });
+});
+
+describe('most blogs', () => {
+  test('list has no blogs', () => {
+    const result = listHelper.mostBlogs(emptyList);
+    expect(result).toEqual({ author: '', blogs: 0 });
+  });
+  test('list has one blog', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog);
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', blogs: 1 });
+  });
+  test('list has many blogs', () => {
+    const result = listHelper.mostBlogs(blogs);
+    expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 });
   });
 });
