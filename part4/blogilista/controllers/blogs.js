@@ -19,6 +19,9 @@ blogsRouter.post('/', async (request, response, next) => {
 
     response.status(201).json(result);
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      return response.status(400).json({ error: error.message });
+    }
     next(error);
   }
 });

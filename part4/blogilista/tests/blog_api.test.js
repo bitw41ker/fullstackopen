@@ -71,6 +71,15 @@ describe('POST /blogs', () => {
       likes: 0,
     });
   });
+
+  test('if title and url is missing then receive status 400', async () => {
+    const res = await api.post('/api/blogs').send({
+      _id: '5a433b3a1b54a676234d17f9',
+      author: 'Dijkstra',
+    });
+
+    expect(res.status).toEqual(400);
+  });
 });
 
 afterAll(() => {
