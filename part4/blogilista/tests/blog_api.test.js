@@ -53,6 +53,24 @@ describe('POST /blogs', () => {
       likes: 8,
     });
   });
+  test('if likes is not set, then dafault to 0', async () => {
+    const res = await api.post('/api/blogs').send({
+      _id: '5a433b3a1b54a676234d17f9',
+      title: 'Statement Considered',
+      author: 'Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    });
+
+    const res2 = await api.get('/api/blogs/');
+
+    expect(res2.body[blogs.length]).toEqual({
+      id: '5a433b3a1b54a676234d17f9',
+      title: 'Statement Considered',
+      author: 'Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 0,
+    });
+  });
 });
 
 afterAll(() => {
