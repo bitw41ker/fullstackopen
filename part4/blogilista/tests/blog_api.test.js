@@ -95,6 +95,31 @@ describe('DELETE /blogs/:id', () => {
   });
 });
 
+describe('PATCH /blogs/:id', () => {
+  test('blog updated', async () => {
+    const res = await api.patch('/api/blogs/5a422b3a1b54a676234d17f9').send({
+      likes: 456,
+    });
+    expect(res.status).toEqual(200);
+    expect(res.body).toEqual({
+      id: '5a422b3a1b54a676234d17f9',
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 456,
+    });
+
+    const res2 = await api.get('/api/blogs/5a422b3a1b54a676234d17f9');
+    expect(res2.body).toEqual({
+      id: '5a422b3a1b54a676234d17f9',
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 456,
+    });
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
