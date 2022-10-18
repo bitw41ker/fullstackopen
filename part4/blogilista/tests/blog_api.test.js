@@ -82,6 +82,19 @@ describe('POST /blogs', () => {
   });
 });
 
+describe('DELETE /blogs/:id', () => {
+  test('blog deleted', async () => {
+    const res = await api.delete('/api/blogs/5a422b3a1b54a676234d17f9');
+    expect(res.status).toEqual(204);
+
+    const res2 = await api.get('/api/blogs');
+    expect(res2.body).toHaveLength(blogs.length - 1);
+    res2.body.forEach((blog) =>
+      expect(blog.id).not.toBe('5a422b3a1b54a676234d17f9')
+    );
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
