@@ -14,6 +14,12 @@ router.post('/', async (req, res, next) => {
       });
     }
 
+    if (!password || password.length < 3) {
+      const e = new Error();
+      e.name = 'ValidationError';
+      throw e;
+    }
+
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
@@ -27,6 +33,9 @@ router.post('/', async (req, res, next) => {
 
     res.status(201).json(savedUser);
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ error: 'username or password invalid' });
+    }
     next(error);
   }
 });
