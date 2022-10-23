@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
@@ -30,18 +31,28 @@ blogsRouter.get('/:id', async (request, response, next) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    const users = await User.find({});
+    const { title, author, likes, url } = request.body;
+    const token = getTokenFrom(request);
 
-    const blog = new Blog({ ...request.body, user: users[0].id });
-    const result = await blog.save();
+    const decodedToken = token ? jwt.verify(token, process.env.SECRET) : false;
+    if (!token || !decodedToken) {
+      return response.status(401).json({ error: 'token missing or invalid' });
+    }
 
-    users[0].notes = users[0].notes.concat(result.id);
-    await users[0].save();
+    const user = await User.findById(decodedToken.id);
 
-    response.status(201).json(result);
+    const blog = new Blog({ title, author, likes, url, user: user.id });
+    const savedBlog = await blog.save();
+
+    user.notes = user.notes.concat(savedBlog.id);
+    await user.save();
+
+    response.status(201).json(savedBlog);
   } catch (error) {
     if (error.name === 'ValidationError') {
       return response.status(400).json({ error: error.message });
+    } else if ((error.name = 'JsonWebTokenError')) {
+      return response.status(401).json({ error: 'invalid token' });
     }
     next(error);
   }
@@ -73,5 +84,13 @@ blogsRouter.patch('/:id', async (request, response, next) => {
     next(error);
   }
 });
+
+const getTokenFrom = (req) => {
+  const authorization = req.get('authorization');
+  if (authorization?.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7);
+  }
+  return null;
+};
 
 module.exports = blogsRouter;
