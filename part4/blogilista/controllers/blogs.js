@@ -32,7 +32,7 @@ blogsRouter.get('/:id', async (request, response, next) => {
 blogsRouter.post('/', async (request, response, next) => {
   try {
     const { title, author, likes, url } = request.body;
-    const token = getTokenFrom(request);
+    const token = request.token;
 
     const decodedToken = token ? jwt.verify(token, process.env.SECRET) : false;
     if (!token || !decodedToken) {
@@ -51,7 +51,7 @@ blogsRouter.post('/', async (request, response, next) => {
   } catch (error) {
     if (error.name === 'ValidationError') {
       return response.status(400).json({ error: error.message });
-    } else if ((error.name = 'JsonWebTokenError')) {
+    } else if (error.name === 'JsonWebTokenError') {
       return response.status(401).json({ error: 'invalid token' });
     }
     next(error);
@@ -84,13 +84,5 @@ blogsRouter.patch('/:id', async (request, response, next) => {
     next(error);
   }
 });
-
-const getTokenFrom = (req) => {
-  const authorization = req.get('authorization');
-  if (authorization?.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7);
-  }
-  return null;
-};
 
 module.exports = blogsRouter;
