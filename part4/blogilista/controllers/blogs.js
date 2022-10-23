@@ -2,6 +2,8 @@ const blogsRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
 const User = require('../models/user');
+const tokenExtractor = require('../middlewares/tokenExtractor');
+const userExtractor = require('../middlewares/userExtractor');
 
 blogsRouter.get('/', async (req, res, next) => {
   try {
@@ -29,7 +31,7 @@ blogsRouter.get('/:id', async (req, res, next) => {
   }
 });
 
-blogsRouter.post('/', async (req, res, next) => {
+blogsRouter.post('/', tokenExtractor, userExtractor, async (req, res, next) => {
   try {
     const { title, author, likes, url } = req.body;
     const token = req.token;
@@ -49,44 +51,38 @@ blogsRouter.post('/', async (req, res, next) => {
 
     res.status(201).json(savedBlog);
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ error: error.message });
-    } else if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({ error: 'invalid token' });
-    }
     next(error);
   }
 });
 
-blogsRouter.delete('/:id', async (req, res, next) => {
-  try {
-    const token = req.token;
+blogsRouter.delete(
+  '/:id',
+  tokenExtractor,
+  userExtractor,
+  async (req, res, next) => {
+    try {
+      const { token, user } = req;
 
-    const decodedToken = token ? jwt.verify(token, process.env.SECRET) : false;
-    if (!token || !decodedToken) {
-      return res.status(401).json({ error: 'token missing or invalid' });
-    }
+      if (!token || !user) {
+        return res.status(401).json({ error: 'token missing or invalid' });
+      }
 
-    const blog = await Blog.findById(req.params.id);
-    if (!blog) {
-      return res.status(400).json({ error: 'blog not found' });
-    }
-    if (blog.user.toString() === decodedToken.id) {
-      await blog.delete();
-    } else {
-      return res.status(401).json({ error: 'not authorized' });
-    }
+      const blog = await Blog.findById(req.params.id);
+      if (!blog) {
+        return res.status(400).json({ error: 'blog not found' });
+      }
+      if (blog.user.toString() === user.id) {
+        await blog.delete();
+      } else {
+        return res.status(401).json({ error: 'not authorized' });
+      }
 
-    res.status(204).end();
-  } catch (error) {
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ error: error.message });
-    } else if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({ error: 'invalid token' });
+      res.status(204).end();
+    } catch (error) {
+      next(error);
     }
-    next(error);
   }
-});
+);
 
 blogsRouter.patch('/:id', async (req, res, next) => {
   try {
