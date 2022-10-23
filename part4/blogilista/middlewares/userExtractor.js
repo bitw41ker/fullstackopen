@@ -11,7 +11,6 @@ const userExtractor = (req, res, next) => {
     } else {
       req.user = null;
     }
-
     next();
   } catch (error) {
     next(error);

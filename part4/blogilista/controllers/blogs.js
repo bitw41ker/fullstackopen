@@ -72,6 +72,10 @@ blogsRouter.delete(
         return res.status(400).json({ error: 'blog not found' });
       }
       if (blog.user.toString() === user.id) {
+        const foundUser = await User.findById(user.id);
+        const index = foundUser.notes.indexOf(blog._id);
+        foundUser.notes.splice(index, 1);
+        await foundUser.save();
         await blog.delete();
       } else {
         return res.status(401).json({ error: 'not authorized' });

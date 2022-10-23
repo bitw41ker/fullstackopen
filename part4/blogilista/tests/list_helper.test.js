@@ -42,6 +42,7 @@ describe('favorite blog', () => {
       author: 'Edsger W. Dijkstra',
       url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
       likes: 12,
+      user: '6354fec13502daef8c32339c',
       __v: 0,
     });
   });
@@ -77,6 +78,4 @@ describe('most likes', () => {
   });
 });
 
-{
-  module.exports = { blogs };
-}
+module.exports = blogs;
