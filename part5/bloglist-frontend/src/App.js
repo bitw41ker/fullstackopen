@@ -3,6 +3,7 @@ import Blogs from './components/Blogs';
 import loginService from './services/loginService';
 import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
+import axios from 'axios';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -17,7 +18,6 @@ const App = () => {
       setUser(user);
     }
   }
-  console.log('render');
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -41,6 +41,31 @@ const App = () => {
     setUser(null);
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const title = e.target.title.value;
+    const author = e.target.author.value;
+    const url = e.target.url.value;
+
+    if (title !== '' && author !== '' && url !== '') {
+      e.target.reset();
+      axios
+        .post(
+          'api/blogs',
+          {
+            title,
+            author,
+            url,
+            likes: 0,
+          },
+          { headers: { Authorization: `Bearer ${user.token}` } }
+        )
+        .then((response) => {
+          blogService.getAll().then((blogs) => setBlogs(blogs));
+        });
+    }
+  };
+
   return (
     <>
       {user ? (
@@ -49,6 +74,29 @@ const App = () => {
           {`${user.name} logged in`}
           <button onClick={handleLogout}>Logout</button>
           <br />
+          <br />
+          Create new
+          <br />
+          <form onSubmit={handleFormSubmit}>
+            <label>
+              Title:
+              <input type="text" name="title" />
+            </label>
+            <br />
+
+            <label>
+              Author:
+              <input type="text" name="author" />
+            </label>
+            <br />
+
+            <label>
+              URL:
+              <input type="text" name="url" />
+              <br />
+            </label>
+            <button>Create</button>
+          </form>
           <br />
           <Blogs blogs={blogs} />
         </>
