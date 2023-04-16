@@ -10,6 +10,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(null);
 
   if (!user) {
     const bloglistUser = window.localStorage.getItem('bloglistUser');
@@ -33,6 +34,10 @@ const App = () => {
       setPassword('');
     } catch (error) {
       console.log(error);
+      setMessage('Wrong username or password');
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
     }
   };
 
@@ -62,6 +67,10 @@ const App = () => {
         )
         .then((response) => {
           blogService.getAll().then((blogs) => setBlogs(blogs));
+          setMessage(`A new blog ${title} by ${author} added`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         });
     }
   };
@@ -71,6 +80,7 @@ const App = () => {
       {user ? (
         <>
           <h1>Blogs</h1>
+          {message && <p>{message}</p>}
           {`${user.name} logged in`}
           <button onClick={handleLogout}>Logout</button>
           <br />
@@ -101,11 +111,15 @@ const App = () => {
           <Blogs blogs={blogs} />
         </>
       ) : (
-        <LoginForm
-          setUsername={setUsername}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
+        <>
+          {message && <p>{message}</p>}
+
+          <LoginForm
+            setUsername={setUsername}
+            setPassword={setPassword}
+            handleLogin={handleLogin}
+          />
+        </>
       )}
     </>
   );
