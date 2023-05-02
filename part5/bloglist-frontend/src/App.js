@@ -11,6 +11,7 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   if (!user) {
     const bloglistUser = window.localStorage.getItem('bloglistUser');
@@ -18,6 +19,10 @@ const App = () => {
       const user = JSON.parse(bloglistUser);
       setUser(user);
     }
+  }
+
+  function toggleShowForm() {
+    setShowForm(!showForm);
   }
 
   useEffect(() => {
@@ -65,12 +70,14 @@ const App = () => {
           },
           { headers: { Authorization: `Bearer ${user.token}` } }
         )
-        .then((response) => {
-          blogService.getAll().then((blogs) => setBlogs(blogs));
+        .then(() => blogService.getAll())
+        .then((blogs) => {
+          setBlogs(blogs);
           setMessage(`A new blog ${title} by ${author} added`);
           setTimeout(() => {
             setMessage(null);
           }, 5000);
+          toggleShowForm();
         });
     }
   };
@@ -87,27 +94,31 @@ const App = () => {
           <br />
           Create new
           <br />
-          <form onSubmit={handleFormSubmit}>
-            <label>
-              Title:
-              <input type="text" name="title" />
-            </label>
-            <br />
-
-            <label>
-              Author:
-              <input type="text" name="author" />
-            </label>
-            <br />
-
-            <label>
-              URL:
-              <input type="text" name="url" />
+          {showForm && (
+            <form onSubmit={handleFormSubmit}>
+              <label>
+                Title:
+                <input type="text" name="title" />
+              </label>
               <br />
-            </label>
-            <button>Create</button>
-          </form>
+
+              <label>
+                Author:
+                <input type="text" name="author" />
+              </label>
+              <br />
+
+              <label>
+                URL:
+                <input type="text" name="url" />
+                <br />
+              </label>
+              <button>Create</button>
+            </form>
+          )}
           <br />
+          {!showForm && <button onClick={toggleShowForm}>New note</button>}
+          {showForm && <button onClick={toggleShowForm}>Cancel</button>}
           <Blogs blogs={blogs} />
         </>
       ) : (
