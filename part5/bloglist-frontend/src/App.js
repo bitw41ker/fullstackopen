@@ -3,7 +3,7 @@ import Blogs from './components/Blogs';
 import loginService from './services/loginService';
 import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
-import axios from 'axios';
+import CreateBlogForm from './components/CreateBlogForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,7 +11,6 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
-  const [showForm, setShowForm] = useState(false);
 
   if (!user) {
     const bloglistUser = window.localStorage.getItem('bloglistUser');
@@ -19,10 +18,6 @@ const App = () => {
       const user = JSON.parse(bloglistUser);
       setUser(user);
     }
-  }
-
-  function toggleShowForm() {
-    setShowForm(!showForm);
   }
 
   useEffect(() => {
@@ -51,37 +46,6 @@ const App = () => {
     setUser(null);
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const title = e.target.title.value;
-    const author = e.target.author.value;
-    const url = e.target.url.value;
-
-    if (title !== '' && author !== '' && url !== '') {
-      e.target.reset();
-      axios
-        .post(
-          'api/blogs',
-          {
-            title,
-            author,
-            url,
-            likes: 0,
-          },
-          { headers: { Authorization: `Bearer ${user.token}` } }
-        )
-        .then(() => blogService.getAll())
-        .then((blogs) => {
-          setBlogs(blogs);
-          setMessage(`A new blog ${title} by ${author} added`);
-          setTimeout(() => {
-            setMessage(null);
-          }, 5000);
-          toggleShowForm();
-        });
-    }
-  };
-
   return (
     <>
       {user ? (
@@ -94,31 +58,11 @@ const App = () => {
           <br />
           Create new
           <br />
-          {showForm && (
-            <form onSubmit={handleFormSubmit}>
-              <label>
-                Title:
-                <input type="text" name="title" />
-              </label>
-              <br />
-
-              <label>
-                Author:
-                <input type="text" name="author" />
-              </label>
-              <br />
-
-              <label>
-                URL:
-                <input type="text" name="url" />
-                <br />
-              </label>
-              <button>Create</button>
-            </form>
-          )}
-          <br />
-          {!showForm && <button onClick={toggleShowForm}>New note</button>}
-          {showForm && <button onClick={toggleShowForm}>Cancel</button>}
+          <CreateBlogForm
+            setMessage={setMessage}
+            setBlogs={setBlogs}
+            user={user}
+          />
           <Blogs blogs={blogs} />
         </>
       ) : (
