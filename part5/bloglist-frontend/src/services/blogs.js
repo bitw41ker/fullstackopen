@@ -6,4 +6,9 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-export default { getAll };
+const update = (id, blog) => {
+  const request = axios.patch(`${baseUrl}/${id}`, blog);
+  return request.then((response) => response.data);
+};
+
+export default { getAll, update };
