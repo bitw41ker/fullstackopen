@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
-import axios from 'axios';
 
 export default function CreateBlogForm({ setMessage, setBlogs, user }) {
   const [showForm, setShowForm] = useState(false);
@@ -17,17 +16,15 @@ export default function CreateBlogForm({ setMessage, setBlogs, user }) {
 
     if (title !== '' && author !== '' && url !== '') {
       e.target.reset();
-      axios
-        .post(
-          'api/blogs',
-          {
-            title,
-            author,
-            url,
-            likes: 0,
-          },
-          { headers: { Authorization: `Bearer ${user.token}` } }
-        )
+      const blog = {
+        title,
+        author,
+        url,
+        likes: 0,
+      };
+
+      blogService
+        .post(blog, user.token)
         .then(() => blogService.getAll())
         .then((blogs) => {
           setBlogs(blogs);

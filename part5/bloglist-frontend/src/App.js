@@ -6,11 +6,38 @@ import LoginForm from './components/LoginForm';
 import CreateBlogForm from './components/CreateBlogForm';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
+  const [blogs, setBlogs] = useState([]);
+
+  async function onLikeClick(blog) {
+    const updatedBlog = {
+      ...blog,
+      user: blog.user,
+      likes: blog.likes + 1,
+    };
+
+    blogService.update(blog.id, updatedBlog);
+
+    const updatedBlogs = blogs.map((b) =>
+      b.id === blog.id ? updatedBlog : { ...b, user: b.user }
+    );
+
+    setBlogs(updatedBlogs);
+  }
+
+  async function onDeleteClick(blog) {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      blogService.remove(blog.id, user.token);
+      const updatedBlogs = blogs
+        .filter((b) => b.id !== blog.id)
+        .map((b) => ({ ...b, user: b.user }));
+
+      setBlogs(updatedBlogs);
+    }
+  }
 
   if (!user) {
     const bloglistUser = window.localStorage.getItem('bloglistUser');
@@ -63,7 +90,12 @@ const App = () => {
             setBlogs={setBlogs}
             user={user}
           />
-          <Blogs blogs={blogs} />
+          <Blogs
+            user={user}
+            blogs={blogs}
+            onLikeClick={onLikeClick}
+            onDeleteClick={onDeleteClick}
+          />
         </>
       ) : (
         <>
