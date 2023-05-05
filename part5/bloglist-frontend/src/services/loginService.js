@@ -6,4 +6,6 @@ async function login(credentials) {
   return res.data;
 }
 
-export default { login };
+const loginService = { login };
+
+export default loginService;

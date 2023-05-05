@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 const blogStyle = {
@@ -45,3 +46,10 @@ const Blog = ({ onLikeClick, onDeleteClick, blog, user }) => {
 };
 
 export default Blog;
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  onLikeClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+};

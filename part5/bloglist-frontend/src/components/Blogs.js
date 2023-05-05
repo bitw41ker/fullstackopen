@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Blog from './Blog';
 
 export default function Blogs({ blogs, user, onLikeClick, onDeleteClick }) {
@@ -17,3 +18,10 @@ export default function Blogs({ blogs, user, onLikeClick, onDeleteClick }) {
     </div>
   );
 }
+
+Blogs.propTypes = {
+  blogs: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  onLikeClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+};

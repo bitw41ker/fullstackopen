@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import blogService from '../services/blogs';
 
 export default function CreateBlogForm({ setMessage, setBlogs, user }) {
@@ -66,3 +67,9 @@ export default function CreateBlogForm({ setMessage, setBlogs, user }) {
     </div>
   );
 }
+
+CreateBlogForm.propTypes = {
+  setMessage: PropTypes.func.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
