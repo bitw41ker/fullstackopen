@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import Blog from './Blog';
 
 describe('<Blog />', () => {
+  const mockLikClickeHandler = jest.fn();
   const blog = {
     title: 'testing',
     author: 'test',
@@ -17,14 +18,12 @@ describe('<Blog />', () => {
     id: '63544dc7041b3cce173e2094',
   };
 
-  let container;
-
   beforeEach(() => {
-    container = render(
+    render(
       <Blog
         blog={blog}
         user={{ username: 'test' }}
-        onLikeClick={() => null}
+        onLikeClick={mockLikClickeHandler}
         onDeleteClick={() => null}
       />
     );
@@ -57,5 +56,18 @@ describe('<Blog />', () => {
 
     const username = screen.queryByText('test');
     expect(username).toBeDefined();
+  });
+
+  test("clicking the 'Like'-button twice calls onLikeClick event handler twice", async () => {
+    const user = userEvent.setup();
+
+    const viewButton = screen.getByText('View');
+    await user.click(viewButton);
+
+    const likeButton = screen.getByText('Like');
+    await user.click(likeButton);
+    await user.click(likeButton);
+
+    expect(mockLikClickeHandler.mock.calls).toHaveLength(2);
   });
 });
