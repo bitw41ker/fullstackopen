@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Blog from './Blog';
 
-test('<Blog /> renders blog title', () => {
+describe('<Blog />', () => {
   const blog = {
     title: 'testing',
     author: 'test',
@@ -16,22 +17,45 @@ test('<Blog /> renders blog title', () => {
     id: '63544dc7041b3cce173e2094',
   };
 
-  render(
-    <Blog
-      blog={blog}
-      user={{ username: 'test' }}
-      onLikeClick={() => null}
-      onDeleteClick={() => null}
-    />
-  );
+  let container;
 
-  const title = screen.getByText('testing', { exact: false });
+  beforeEach(() => {
+    container = render(
+      <Blog
+        blog={blog}
+        user={{ username: 'test' }}
+        onLikeClick={() => null}
+        onDeleteClick={() => null}
+      />
+    );
+  });
 
-  expect(title).toBeDefined();
+  test('renders blog title', () => {
+    const title = screen.getByText('testing', { exact: false });
+    expect(title).toBeDefined();
 
-  const url = screen.queryByText('localhost');
-  expect(url).toBeNull();
+    const url = screen.queryByText('localhost');
+    expect(url).toBeNull();
 
-  const likes = screen.queryByText('15');
-  expect(likes).toBeNull();
+    const likes = screen.queryByText('15');
+    expect(likes).toBeNull();
+  });
+
+  test('renders blog user, url and likes when "View"-button is clicked', async () => {
+    const user = userEvent.setup();
+    const button = screen.getByText('View');
+    await user.click(button);
+
+    const title = screen.getByText('testing', { exact: false });
+    expect(title).toBeDefined();
+
+    const url = screen.queryByText('localhost');
+    expect(url).toBeDefined();
+
+    const likes = screen.queryByText('15');
+    expect(likes).toBeDefined();
+
+    const username = screen.queryByText('test');
+    expect(username).toBeDefined();
+  });
 });
