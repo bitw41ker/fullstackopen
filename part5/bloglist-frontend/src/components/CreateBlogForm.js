@@ -1,42 +1,25 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import blogService from '../services/blogs';
 
-export default function CreateBlogForm({ setMessage, setBlogs, user }) {
+export default function CreateBlogForm({ onFormSubmit }) {
   const [showForm, setShowForm] = useState(false);
 
   function toggleShowForm() {
     setShowForm(!showForm);
   }
 
-  const handleFormSubmit = (e) => {
+  async function handleFormSubmit(e) {
     e.preventDefault();
-    const title = e.target.title.value;
-    const author = e.target.author.value;
-    const url = e.target.url.value;
+    await onFormSubmit({
+      title: e.target.elements.title.value,
+      author: e.target.elements.author.value,
+      url: e.target.elements.url.value,
+    });
 
-    if (title !== '' && author !== '' && url !== '') {
-      e.target.reset();
-      const blog = {
-        title,
-        author,
-        url,
-        likes: 0,
-      };
+    e.target.reset();
+    toggleShowForm();
+  }
 
-      blogService
-        .post(blog, user.token)
-        .then(() => blogService.getAll())
-        .then((blogs) => {
-          setBlogs(blogs);
-          setMessage(`A new blog ${title} by ${author} added`);
-          setTimeout(() => {
-            setMessage(null);
-          }, 5000);
-          toggleShowForm();
-        });
-    }
-  };
   return (
     <div>
       {showForm && (
@@ -69,7 +52,5 @@ export default function CreateBlogForm({ setMessage, setBlogs, user }) {
 }
 
 CreateBlogForm.propTypes = {
-  setMessage: PropTypes.func.isRequired,
-  setBlogs: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
 };

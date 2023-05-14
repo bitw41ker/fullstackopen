@@ -39,6 +39,26 @@ const App = () => {
     }
   }
 
+  async function handleFormSubmit({ title, author, url }) {
+    if (title !== '' && author !== '' && url !== '') {
+      const blog = {
+        title,
+        author,
+        url,
+        likes: 0,
+      };
+
+      await blogService.post(blog, user.token);
+      const blogs = await blogService.getAll();
+      setBlogs(blogs);
+      setMessage(`A new blog ${title} by ${author} added`);
+
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+    }
+  }
+
   if (!user) {
     const bloglistUser = window.localStorage.getItem('bloglistUser');
     if (bloglistUser) {
@@ -85,11 +105,7 @@ const App = () => {
           <br />
           Create new
           <br />
-          <CreateBlogForm
-            setMessage={setMessage}
-            setBlogs={setBlogs}
-            user={user}
-          />
+          <CreateBlogForm onFormSubmit={handleFormSubmit} />
           <Blogs
             user={user}
             blogs={blogs}
