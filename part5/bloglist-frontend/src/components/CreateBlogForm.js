@@ -26,27 +26,35 @@ export default function CreateBlogForm({ onFormSubmit }) {
         <form onSubmit={handleFormSubmit}>
           <label>
             Title:
-            <input type="text" name="title" />
+            <input id="note-title" type="text" name="title" />
           </label>
           <br />
 
           <label>
             Author:
-            <input type="text" name="author" />
+            <input id="note-author" type="text" name="author" />
           </label>
           <br />
 
           <label>
             URL:
-            <input type="text" name="url" />
+            <input id="note-url" type="text" name="url" />
             <br />
           </label>
-          <button>Create</button>
+          <button id="create-note-btn">Create</button>
         </form>
       )}
       <br />
-      {!showForm && <button onClick={toggleShowForm}>New note</button>}
-      {showForm && <button onClick={toggleShowForm}>Cancel</button>}
+      {!showForm && (
+        <button id="new-note-btn" onClick={toggleShowForm}>
+          New note
+        </button>
+      )}
+      {showForm && (
+        <button id="new-note-cancel-btn" onClick={toggleShowForm}>
+          Cancel
+        </button>
+      )}
     </div>
   );
 }

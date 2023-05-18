@@ -31,4 +31,29 @@ describe('Blog app', function () {
       cy.contains('Wrong username or password');
     });
   });
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.login({ username: 'test', password: 'test' });
+    });
+
+    it('A blog can be created', function () {
+      cy.get('#new-note-btn').click();
+      cy.get('#note-title').type('testTitle');
+      cy.get('#note-author').type('testAuthor');
+      cy.get('#note-url').type('testUrl');
+      cy.get('#create-note-btn').click();
+
+      cy.contains('A new blog testTitle by testAuthor added');
+      cy.get('.blog').last().contains('testTitle');
+      cy.get('.blog').last().contains('testAuthor');
+      cy.get('.blog').last().find('button').contains('View').click();
+
+      cy.get('.blog').last().find('button').contains('Hide');
+      cy.get('.blog').last().contains('testUrl');
+      cy.get('.blog').last().contains('0');
+      cy.get('.blog').last().contains('testAuthor');
+      cy.get('.blog').last().find('button').contains('Delete');
+    });
+  });
 });

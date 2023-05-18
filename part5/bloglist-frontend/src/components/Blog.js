@@ -20,7 +20,7 @@ const Blog = ({ onLikeClick, onDeleteClick, blog, user }) => {
 
   return (
     <div>
-      <div style={blogStyle}>
+      <div className="blog" style={blogStyle}>
         <span>
           {blog.title} {blog.author}{' '}
         </span>
