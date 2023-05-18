@@ -93,6 +93,59 @@ describe('Blog app', function () {
         cy.get('.blog').should('have.length', 2);
       });
 
+      it('blogs are sorted by like count', function () {
+        cy.get('.blog').eq(0).find('button').contains('View').click();
+        cy.get('.blog').eq(1).find('button').contains('View').click();
+        cy.get('.blog').eq(2).find('button').contains('View').click();
+
+        cy.get('.blog')
+          .contains('testTitle1')
+          .parent()
+          .find('button')
+          .contains('Like')
+          .click()
+          .click()
+          .click();
+        cy.get('.blog')
+          .contains('testTitle2')
+          .parent()
+          .find('button')
+          .contains('Like')
+          .click()
+          .click();
+        cy.get('.blog')
+          .contains('testTitle3')
+          .parent()
+          .find('button')
+          .contains('Like')
+          .click();
+
+        cy.get('.blog').eq(0).contains('testTitle1');
+        cy.get('.blog').eq(1).contains('testTitle2');
+        cy.get('.blog').eq(2).contains('testTitle3');
+
+        cy.get('.blog')
+          .contains('testTitle2')
+          .parent()
+          .find('button')
+          .contains('Like')
+          .click()
+          .click()
+          .click();
+        cy.get('.blog')
+          .contains('testTitle3')
+          .parent()
+          .find('button')
+          .contains('Like')
+          .click()
+          .click()
+          .click();
+
+        cy.get('.blog').eq(0).contains('testTitle2');
+        cy.get('.blog').eq(1).contains('testTitle3');
+        cy.get('.blog').eq(2).contains('testTitle1');
+      });
+
       describe('When logged in as another user', function () {
         beforeEach(function () {
           cy.get('#logout-btn').click();
