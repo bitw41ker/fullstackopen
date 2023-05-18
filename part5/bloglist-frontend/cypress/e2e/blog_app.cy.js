@@ -55,5 +55,32 @@ describe('Blog app', function () {
       cy.get('.blog').last().contains('testAuthor');
       cy.get('.blog').last().find('button').contains('Delete');
     });
+
+    describe('and several blogs exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'testTitle1',
+          author: 'testName',
+          url: 'testUrl1',
+        });
+        cy.createBlog({
+          title: 'testTitle2',
+          author: 'testName',
+          url: 'testUrl2',
+        });
+        cy.createBlog({
+          title: 'testTitle3',
+          author: 'testName',
+          url: 'testUrl3',
+        });
+        cy.visit('http://localhost:3000');
+      });
+
+      it('blog can be liked', function () {
+        cy.get('.blog').first().find('button').contains('View').click();
+        cy.get('.blog').first().find('button').contains('Like').click();
+        cy.get('.blog').first().contains(/^1 $/);
+      });
+    });
   });
 });
