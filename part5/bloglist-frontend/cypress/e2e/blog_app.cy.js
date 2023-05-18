@@ -81,6 +81,12 @@ describe('Blog app', function () {
         cy.get('.blog').first().find('button').contains('Like').click();
         cy.get('.blog').first().contains(/^1 $/);
       });
+
+      it('blog can be deleted', function () {
+        cy.get('.blog').first().find('button').contains('View').click();
+        cy.get('.blog').first().find('button').contains('Delete').click();
+        cy.get('.blog').should('have.length', 2);
+      });
     });
   });
 });
