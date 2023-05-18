@@ -100,7 +100,9 @@ const App = () => {
           <h1>Blogs</h1>
           {message && <p>{message}</p>}
           {`${user.name} logged in`}
-          <button onClick={handleLogout}>Logout</button>
+          <button id="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
           <br />
           <br />
           Create new

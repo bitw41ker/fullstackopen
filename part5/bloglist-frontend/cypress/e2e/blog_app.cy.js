@@ -6,6 +6,11 @@ describe('Blog app', function () {
       name: 'testName',
       password: 'test',
     });
+    cy.request('POST', 'http://localhost:3003/api/users', {
+      username: 'test2',
+      name: 'testName2',
+      password: 'test2',
+    });
     cy.visit('http://localhost:3000');
   });
 
@@ -86,6 +91,23 @@ describe('Blog app', function () {
         cy.get('.blog').first().find('button').contains('View').click();
         cy.get('.blog').first().find('button').contains('Delete').click();
         cy.get('.blog').should('have.length', 2);
+      });
+
+      describe('When logged in as another user', function () {
+        beforeEach(function () {
+          cy.get('#logout-btn').click();
+          cy.login({ username: 'test2', password: 'test2' });
+          cy.visit('http://localhost:3000');
+        });
+
+        it("can't see delete button of the other user blog", function () {
+          // should not see delete button
+          cy.get('.blog').first().find('button').contains('View').click();
+          cy.get('.blog')
+            .first()
+            .find('button')
+            .should('not.contain', 'Delete');
+        });
       });
     });
   });
