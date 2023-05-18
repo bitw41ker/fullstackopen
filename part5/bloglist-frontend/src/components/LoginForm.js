@@ -9,6 +9,7 @@ export default function LoginForm({ handleLogin, setUsername, setPassword }) {
         <div>
           Username
           <input
+            id="username"
             type="text"
             name="username"
             onChange={(e) => setUsername(e.target.value)}
@@ -18,12 +19,15 @@ export default function LoginForm({ handleLogin, setUsername, setPassword }) {
         <div>
           Password
           <input
+            id="password"
             type="password"
             name="password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button id="login-btn" type="submit">
+          Login
+        </button>
       </form>
     </>
   );
