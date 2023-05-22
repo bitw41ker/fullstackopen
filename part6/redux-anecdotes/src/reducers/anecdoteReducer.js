@@ -30,6 +30,11 @@ const reducer = (state = initialState, action) => {
           ? { ...anecdote, votes: anecdote.votes + 1 }
           : anecdote
       );
+    case 'ADD':
+      return [
+        ...state,
+        { content: action.payload.anecdote, id: getId(), votes: 0 },
+      ];
   }
 
   return state;
