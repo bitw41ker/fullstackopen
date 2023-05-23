@@ -27,9 +27,13 @@ const anecdoteSlice = createSlice({
   reducers: {
     voteAnecdote: (state, action) => {
       const id = action.payload;
-      state.find((anecdote) => anecdote.id === id).votes++;
+
+      const anecdote = state.find((anecdote) => anecdote.id === id);
+      anecdote.votes++;
+
       state.sort((a, b) => b.votes - a.votes);
     },
+
     addAnecdote: (state, action) => {
       state.push({ content: action.payload, id: getId(), votes: 0 });
     },
