@@ -18,6 +18,9 @@ const AnecdoteForm = () => {
         queryClient.setQueryData('anecdotes', [...anecdotes, newAnecdote]);
         setNotification(`anecdote '${newAnecdote.content}' created`, 5);
       },
+      onError: () => {
+        setNotification('too short anecdote, must have length 5 or more', 5);
+      },
     });
 
     event.target.anecdote.value = '';
