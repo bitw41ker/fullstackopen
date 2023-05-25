@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { voteAnecdote } from '../reducers/anecdoteReducer';
+import { voteAnecdote, setAnecdotes } from '../reducers/anecdoteReducer';
 import {
   setNotification,
   clearNotification,
 } from '../reducers/notificationReducer';
+import anecdoteService from '../services/anecdotes';
 
 export const AnecdoteList = () => {
   let ref = useRef(null);
@@ -35,6 +36,12 @@ export const AnecdoteList = () => {
       dispatch(clearNotification());
     }, 5000);
   };
+
+  useEffect(() => {
+    anecdoteService.getAll().then((anecdotes) => {
+      dispatch(setAnecdotes(anecdotes));
+    });
+  }, [dispatch]);
   return (
     <>
       {anecdotes.map((anecdote) => (
