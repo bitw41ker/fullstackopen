@@ -1,10 +1,23 @@
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import AnecdoteForm from './components/AnecdoteForm';
 import Notification from './components/Notification';
-import { getAnecdotes } from './requests';
+import { getAnecdotes, updateAnecdote } from './requests';
 
 const App = () => {
+  const updateAnecdoteMutation = useMutation(updateAnecdote);
+  const queryClient = useQueryClient();
+
   const handleVote = (anecdote) => {
+    const updatedAnecdote = { ...anecdote, votes: anecdote.votes + 1 };
+    updateAnecdoteMutation.mutate(updatedAnecdote, {
+      onSuccess: () => {
+        const anecdotes = queryClient.getQueryData('anecdotes');
+        const updatedAnecdotes = anecdotes.map((anecdote) =>
+          anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
+        );
+        queryClient.setQueryData('anecdotes', updatedAnecdotes);
+      },
+    });
     console.log('vote');
   };
 
