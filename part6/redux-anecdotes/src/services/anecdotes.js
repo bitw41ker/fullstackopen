@@ -12,6 +12,14 @@ const create = async (content) => {
   return res.data;
 };
 
-const exportObj = { getAll, create };
+const vote = async (id) => {
+  const anecdotes = await getAll();
+  let votes = anecdotes.find((a) => a.id === id).votes;
+  votes++;
+  const res = await axios.patch(`${baseUrl}/${id}`, { votes });
+  return res.data;
+};
+
+const exportObj = { getAll, create, vote };
 
 export default exportObj;
