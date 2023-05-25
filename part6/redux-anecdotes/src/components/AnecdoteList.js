@@ -1,10 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  voteAnecdote,
-  setAnecdotes,
-  initialAnecdotes,
-} from '../reducers/anecdoteReducer';
+import { voteAnecdote, initialAnecdotes } from '../reducers/anecdoteReducer';
 import {
   setNotification,
   clearNotification,
