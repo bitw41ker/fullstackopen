@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Root from './routes/Root';
-import AnecdoteList, {
-  loader as anecdoteLoader,
-} from './components/AnecdoteList';
-import About from './components/About';
-import CreateNew from './components/CreateNew';
+import Anecdotes, { loader as anecdotesLoader } from './routes/Anecdotes';
+import Anecdote, { loader as anecdoteLoader } from './routes/Anecdote';
+import About from './routes/About';
+import CreateNew from './routes/CreateNew';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -15,7 +14,12 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <AnecdoteList />,
+        element: <Anecdotes />,
+        loader: anecdotesLoader,
+      },
+      {
+        path: 'anecdotes/:anecdoteId',
+        element: <Anecdote />,
         loader: anecdoteLoader,
       },
       { path: 'create', element: <CreateNew addNew={() => null} /> },

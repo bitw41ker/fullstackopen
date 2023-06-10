@@ -1,4 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const anecdotes = [
   {
@@ -17,22 +18,28 @@ const anecdotes = [
   },
 ];
 
+export function getAnecdote(id) {
+  return anecdotes.find((a) => a.id === Number(id));
+}
+
 export function loader() {
   return anecdotes;
 }
 
-const AnecdoteList = () => {
+const Anecdotes = () => {
   const anecdotes = useLoaderData();
   return (
     <div>
       <h2>Anecdotes</h2>
       <ul>
         {anecdotes.map((anecdote) => (
-          <li key={anecdote.id}>{anecdote.content}</li>
+          <li key={anecdote.id}>
+            <Link to={`anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+          </li>
         ))}
       </ul>
     </div>
   );
 };
 
-export default AnecdoteList;
+export default Anecdotes;

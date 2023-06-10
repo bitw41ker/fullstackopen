@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Menu from '../components/Menu';
-import Footer from '../components/Footer';
+import Menu from './Menu';
+import Footer from './Footer';
 
 const Root = () => {
   const [notification, setNotification] = useState('');
