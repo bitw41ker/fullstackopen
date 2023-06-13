@@ -22,8 +22,12 @@ export function getAnecdote(id) {
   return anecdotes.find((a) => a.id === Number(id));
 }
 
-export function loader() {
+export function getAnecdotes() {
   return anecdotes;
+}
+
+export function loader() {
+  return getAnecdotes();
 }
 
 const Anecdotes = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Root from './routes/Root';
+import Root, { action as rootAction } from './routes/Root';
 import Anecdotes, { loader as anecdotesLoader } from './routes/Anecdotes';
 import Anecdote, { loader as anecdoteLoader } from './routes/Anecdote';
 import About from './routes/About';
@@ -11,6 +11,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    action: rootAction,
     children: [
       {
         index: true,
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
         element: <Anecdote />,
         loader: anecdoteLoader,
       },
-      { path: 'create', element: <CreateNew addNew={() => null} /> },
+      { path: 'create', element: <CreateNew /> },
       { path: 'about', element: <About /> },
     ],
   },
