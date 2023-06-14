@@ -1,10 +1,13 @@
+import React, { useRef } from 'react';
 import { Form } from 'react-router-dom';
 
 const CreateNew = (props) => {
+  const formRef = useRef();
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <Form method="post" action="/">
+      <Form ref={formRef} method="post" action="/">
         <div>
           content
           <input name="content" />
@@ -18,6 +21,9 @@ const CreateNew = (props) => {
           <input name="info" />
         </div>
         <button type="submit">create</button>
+        <button type="button" onClick={() => formRef.current.reset()}>
+          reset
+        </button>
       </Form>
     </div>
   );
