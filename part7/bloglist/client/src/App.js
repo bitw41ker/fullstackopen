@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Blogs from './components/Blogs';
 import loginService from './services/loginService';
 import blogService from './services/blogs';
@@ -6,12 +6,13 @@ import LoginForm from './components/LoginForm';
 import CreateBlogForm from './components/CreateBlogForm';
 import Notification from './components/Notification';
 import { useNotificationDispatch } from './contexts/NotificationContext';
+import useBlogs from './hooks/useBlogs';
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [blogs, setBlogs] = useState([]);
+  const { blogs } = useBlogs();
   const notificationDispatch = useNotificationDispatch();
 
   async function onLikeClick(blog) {
@@ -27,7 +28,7 @@ const App = () => {
       b.id === blog.id ? updatedBlog : { ...b, user: b.user }
     );
 
-    setBlogs(updatedBlogs);
+    //setBlogs(updatedBlogs);
   }
 
   async function onDeleteClick(blog) {
@@ -37,27 +38,7 @@ const App = () => {
         .filter((b) => b.id !== blog.id)
         .map((b) => ({ ...b, user: b.user }));
 
-      setBlogs(updatedBlogs);
-    }
-  }
-
-  async function handleFormSubmit({ title, author, url }) {
-    if (title !== '' && author !== '' && url !== '') {
-      const blog = {
-        title,
-        author,
-        url,
-        likes: 0,
-      };
-
-      await blogService.post(blog, user.token);
-      const blogs = await blogService.getAll();
-      setBlogs(blogs);
-
-      notificationDispatch({
-        type: 'set',
-        notification: `A new blog ${title} by ${author} added`,
-      });
+      //setBlogs(updatedBlogs);
     }
   }
 
@@ -68,10 +49,6 @@ const App = () => {
       setUser(user);
     }
   }
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
 
   const handleLogin = async (e) => {
     try {
@@ -109,13 +86,17 @@ const App = () => {
         <br />
         Create new
         <br />
-        <CreateBlogForm onFormSubmit={handleFormSubmit} />
-        <Blogs
-          user={user}
-          blogs={blogs}
-          onLikeClick={onLikeClick}
-          onDeleteClick={onDeleteClick}
-        />
+        <CreateBlogForm user={user} />
+        {blogs ? (
+          <Blogs
+            user={user}
+            blogs={blogs}
+            onLikeClick={onLikeClick}
+            onDeleteClick={onDeleteClick}
+          />
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
     );
   }
