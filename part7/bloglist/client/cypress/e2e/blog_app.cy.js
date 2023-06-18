@@ -104,21 +104,27 @@ describe('Blog app', function () {
           .find('button')
           .contains('Like')
           .click()
+          .wait(1000)
           .click()
-          .click();
+          .wait(1000)
+          .click()
+          .wait(1000);
         cy.get('.blog')
           .contains('testTitle2')
           .parent()
           .find('button')
           .contains('Like')
           .click()
-          .click();
+          .wait(1000)
+          .click()
+          .wait(1000);
         cy.get('.blog')
           .contains('testTitle3')
           .parent()
           .find('button')
           .contains('Like')
-          .click();
+          .click()
+          .wait(1000);
 
         cy.get('.blog').eq(0).contains('testTitle1');
         cy.get('.blog').eq(1).contains('testTitle2');
@@ -130,16 +136,22 @@ describe('Blog app', function () {
           .find('button')
           .contains('Like')
           .click()
+          .wait(1000)
           .click()
-          .click();
+          .wait(1000)
+          .click()
+          .wait(1000);
         cy.get('.blog')
           .contains('testTitle3')
           .parent()
           .find('button')
           .contains('Like')
           .click()
+          .wait(1000)
           .click()
-          .click();
+          .wait(1000)
+          .click()
+          .wait(1000);
 
         cy.get('.blog').eq(0).contains('testTitle2');
         cy.get('.blog').eq(1).contains('testTitle3');

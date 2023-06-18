@@ -15,33 +15,6 @@ const App = () => {
   const { blogs } = useBlogs();
   const notificationDispatch = useNotificationDispatch();
 
-  async function onLikeClick(blog) {
-    const updatedBlog = {
-      ...blog,
-      user: blog.user,
-      likes: blog.likes + 1,
-    };
-
-    blogService.update(blog.id, updatedBlog);
-
-    const updatedBlogs = blogs.map((b) =>
-      b.id === blog.id ? updatedBlog : { ...b, user: b.user }
-    );
-
-    //setBlogs(updatedBlogs);
-  }
-
-  async function onDeleteClick(blog) {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      blogService.remove(blog.id, user.token);
-      const updatedBlogs = blogs
-        .filter((b) => b.id !== blog.id)
-        .map((b) => ({ ...b, user: b.user }));
-
-      //setBlogs(updatedBlogs);
-    }
-  }
-
   if (!user) {
     const bloglistUser = window.localStorage.getItem('bloglistUser');
     if (bloglistUser) {
@@ -87,16 +60,7 @@ const App = () => {
         Create new
         <br />
         <CreateBlogForm user={user} />
-        {blogs ? (
-          <Blogs
-            user={user}
-            blogs={blogs}
-            onLikeClick={onLikeClick}
-            onDeleteClick={onDeleteClick}
-          />
-        ) : (
-          <div>Loading...</div>
-        )}
+        {blogs ? <Blogs user={user} blogs={blogs} /> : <div>Loading...</div>}
       </div>
     );
   }
