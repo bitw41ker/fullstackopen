@@ -4,13 +4,15 @@ import loginService from './services/loginService';
 import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
 import CreateBlogForm from './components/CreateBlogForm';
+import Notification from './components/Notification';
+import { useNotificationDispatch } from './contexts/NotificationContext';
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
+  const notificationDispatch = useNotificationDispatch();
 
   async function onLikeClick(blog) {
     const updatedBlog = {
@@ -51,11 +53,11 @@ const App = () => {
       await blogService.post(blog, user.token);
       const blogs = await blogService.getAll();
       setBlogs(blogs);
-      setMessage(`A new blog ${title} by ${author} added`);
 
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
+      notificationDispatch({
+        type: 'set',
+        notification: `A new blog ${title} by ${author} added`,
+      });
     }
   }
 
@@ -81,10 +83,11 @@ const App = () => {
       setPassword('');
     } catch (error) {
       console.log(error);
-      setMessage('Wrong username or password');
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
+
+      notificationDispatch({
+        type: 'set',
+        notification: 'Wrong username or password',
+      });
     }
   };
 
@@ -93,40 +96,39 @@ const App = () => {
     setUser(null);
   };
 
-  return (
-    <>
-      {user ? (
-        <>
-          <h1>Blogs</h1>
-          {message && <p>{message}</p>}
-          {`${user.name} logged in`}
-          <button id="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-          <br />
-          <br />
-          Create new
-          <br />
-          <CreateBlogForm onFormSubmit={handleFormSubmit} />
-          <Blogs
-            user={user}
-            blogs={blogs}
-            onLikeClick={onLikeClick}
-            onDeleteClick={onDeleteClick}
-          />
-        </>
-      ) : (
-        <>
-          {message && <p>{message}</p>}
+  if (user) {
+    return (
+      <div>
+        <h1>Blogs</h1>
+        <Notification />
+        {`${user.name} logged in`}
+        <button id="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+        <br />
+        <br />
+        Create new
+        <br />
+        <CreateBlogForm onFormSubmit={handleFormSubmit} />
+        <Blogs
+          user={user}
+          blogs={blogs}
+          onLikeClick={onLikeClick}
+          onDeleteClick={onDeleteClick}
+        />
+      </div>
+    );
+  }
 
-          <LoginForm
-            setUsername={setUsername}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-          />
-        </>
-      )}
-    </>
+  return (
+    <div>
+      <Notification />
+      <LoginForm
+        setUsername={setUsername}
+        setPassword={setPassword}
+        handleLogin={handleLogin}
+      />
+    </div>
   );
 };
 
