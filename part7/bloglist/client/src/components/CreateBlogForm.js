@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import blogService from '../services/blogs';
 import { useNotificationDispatch } from '../contexts/NotificationContext';
+import { useAuth } from '../contexts/AuthContext';
 
-export default function CreateBlogForm({ user }) {
+export default function CreateBlogForm() {
   const [showForm, setShowForm] = useState(false);
   const notificationDispatch = useNotificationDispatch();
   const queryClient = useQueryClient();
+  const user = useAuth();
 
   const mutation = useMutation({
     mutationFn: ({ blog, token }) => blogService.post(blog, token),
@@ -104,6 +106,4 @@ export default function CreateBlogForm({ user }) {
   );
 }
 
-CreateBlogForm.propTypes = {
-  user: PropTypes.object.isRequired,
-};
+CreateBlogForm.propTypes = {};

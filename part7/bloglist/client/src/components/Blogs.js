@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import Blog from './Blog';
+import { useAuth } from '../contexts/AuthContext';
 
-export default function Blogs({ blogs, user }) {
+export default function Blogs({ blogs }) {
+  const user = useAuth();
   return (
     <div>
       {blogs
@@ -15,5 +17,4 @@ export default function Blogs({ blogs, user }) {
 
 Blogs.propTypes = {
   blogs: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired,
 };

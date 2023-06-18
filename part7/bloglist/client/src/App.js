@@ -1,39 +1,31 @@
 import { useState } from 'react';
 import Blogs from './components/Blogs';
 import loginService from './services/loginService';
-import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
 import CreateBlogForm from './components/CreateBlogForm';
 import Notification from './components/Notification';
 import { useNotificationDispatch } from './contexts/NotificationContext';
+import { useAuthDispatch, useAuth } from './contexts/AuthContext';
 import useBlogs from './hooks/useBlogs';
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
+  const user = useAuth();
   const { blogs } = useBlogs();
   const notificationDispatch = useNotificationDispatch();
-
-  if (!user) {
-    const bloglistUser = window.localStorage.getItem('bloglistUser');
-    if (bloglistUser) {
-      const user = JSON.parse(bloglistUser);
-      setUser(user);
-    }
-  }
+  const authDispatch = useAuthDispatch();
 
   const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      const user = await loginService.login({ username, password });
-      setUser(user);
-      window.localStorage.setItem('bloglistUser', JSON.stringify(user));
-      setUsername('');
-      setPassword('');
+      const user = await loginService.login({
+        username,
+        password,
+      });
+      authDispatch({ type: 'login', user });
     } catch (error) {
       console.log(error);
-
       notificationDispatch({
         type: 'set',
         notification: 'Wrong username or password',
@@ -42,8 +34,7 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    window.localStorage.removeItem('bloglistUser');
-    setUser(null);
+    authDispatch({ type: 'logout' });
   };
 
   if (user) {
@@ -59,8 +50,8 @@ const App = () => {
         <br />
         Create new
         <br />
-        <CreateBlogForm user={user} />
-        {blogs ? <Blogs user={user} blogs={blogs} /> : <div>Loading...</div>}
+        <CreateBlogForm />
+        {blogs ? <Blogs blogs={blogs} /> : <div>Loading...</div>}
       </div>
     );
   }
