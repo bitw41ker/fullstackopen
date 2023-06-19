@@ -40,7 +40,6 @@ const App = () => {
   if (user) {
     return (
       <div>
-        <h1>Blogs</h1>
         <Notification />
         {`${user.name} logged in`}
         <button id="logout-btn" onClick={handleLogout}>
