@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import blogService from '../services/blogs';
 import { useNotificationDispatch } from '../contexts/NotificationContext';
@@ -67,6 +66,8 @@ export default function CreateBlogForm() {
 
   return (
     <div>
+      Create new
+      <br />
       {showForm && (
         <form onSubmit={handleFormSubmit}>
           <label>
@@ -105,5 +106,3 @@ export default function CreateBlogForm() {
     </div>
   );
 }
-
-CreateBlogForm.propTypes = {};

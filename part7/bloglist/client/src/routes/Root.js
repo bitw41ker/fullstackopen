@@ -1,11 +1,11 @@
-import { Outlet } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import App from '../components/App';
 
 const Root = () => {
   return (
-    <>
-      <h1>Blogs</h1>
-      <Outlet />
-    </>
+    <ProtectedRoute>
+      <App />
+    </ProtectedRoute>
   );
 };
 
