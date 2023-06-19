@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from './routes/Root';
 import Users, { loader as usersLoader } from './routes/Users';
+import User, { loader as userLoader } from './routes/User';
 import Login from './routes/Login';
 
 const queryOptions = {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <RootIndex /> },
       { path: 'users', element: <Users />, loader: usersLoader },
+      { path: 'users/:userId', element: <User />, loader: userLoader },
     ],
   },
   { path: '/login', element: <Login /> },

@@ -1,5 +1,5 @@
 import userService from '../services/users';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 
 const Users = () => {
   const { users } = useLoaderData();
@@ -18,7 +18,9 @@ const Users = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td>
+                <Link to={user.id}>{user.name}</Link>
+              </td>
               <td>{user.blogsCount}</td>
             </tr>
           ))}

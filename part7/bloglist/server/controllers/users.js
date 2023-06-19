@@ -55,4 +55,20 @@ router.get('/', async (request, response, next) => {
   }
 });
 
+router.get('/:id', async (request, response, next) => {
+  const { id } = request.params;
+  try {
+    const user = await User.findById(id).populate('notes', {
+      title: 1,
+      author: 1,
+      url: 1,
+      likes: 1,
+      id: 1,
+    });
+    response.json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
