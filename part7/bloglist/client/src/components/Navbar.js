@@ -1,5 +1,6 @@
 import { useAuthDispatch } from '../contexts/AuthContext';
 import { useAuth } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const user = useAuth();
@@ -11,7 +12,8 @@ const Navbar = () => {
 
   return (
     <div>
-      {`${user.name} logged in`}
+      <Link to="/">Blogs</Link> <Link to="/users">Users</Link>
+      <span>{user.name} logged in</span>
       <button id="logout-btn" onClick={handleLogout}>
         Logout
       </button>

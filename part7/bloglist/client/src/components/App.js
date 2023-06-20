@@ -5,10 +5,10 @@ import Navbar from './Navbar';
 const App = () => {
   return (
     <>
+      <Navbar />
       <h1>Blogs</h1>
       <Notification />
       <br />
-      <Navbar />
       <Outlet />
     </>
   );
