@@ -1,4 +1,4 @@
-import Blogs from '../components/Blogs';
+import BlogsList from '../components/BlogsList';
 import CreateBlogForm from '../components/CreateBlogForm';
 import useBlogs from '../hooks/useBlogs';
 
@@ -9,7 +9,7 @@ const RootIndex = () => {
     <div>
       <CreateBlogForm />
       <br />
-      {blogs ? <Blogs blogs={blogs} /> : <div>Loading...</div>}
+      {blogs ? <BlogsList blogs={blogs} /> : <div>Loading...</div>}
     </div>
   );
 };

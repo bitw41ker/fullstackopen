@@ -55,6 +55,24 @@ blogsRouter.post('/', tokenExtractor, userExtractor, async (req, res, next) => {
   }
 });
 
+blogsRouter.post('/:id/like', tokenExtractor, async (req, res, next) => {
+  try {
+    const token = req.token;
+
+    const decodedToken = token ? jwt.verify(token, process.env.SECRET) : false;
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const blog = await Blog.findById(req.params.id);
+    blog.likes++;
+    const updatedBlog = await blog.save();
+    res.json(updatedBlog);
+  } catch (error) {
+    next(error);
+  }
+});
+
 blogsRouter.delete(
   '/:id',
   tokenExtractor,
