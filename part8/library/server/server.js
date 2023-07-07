@@ -94,20 +94,20 @@ let books = [
 ];
 
 const typeDefs = `
-type Book {
-  id: ID!
-  title: String!
-  author: String!
-  published: Int!
-  genres: [String!]!
-}
+  type Book {
+    id: ID!
+    title: String!
+    author: String!
+    published: Int!
+    genres: [String!]!
+  }
 
-type Author {
-  id: ID!
-  name: String!
-  born: Int
-  bookCount: Int!
-}
+  type Author {
+    id: ID!
+    name: String!
+    born: Int
+    bookCount: Int!
+  }
 
   type Query {
     bookCount: Int
