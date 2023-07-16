@@ -20,9 +20,30 @@ const allBooks = gql`
   }
 `;
 
+const createBook = gql`
+  mutation createBook(
+    $title: String!
+    $author: String!
+    $published: Int!
+    $genres: [String!]!
+  ) {
+    addBook(
+      title: $title
+      author: $author
+      published: $published
+      genres: $genres
+    ) {
+      title
+      author
+      published
+    }
+  }
+`;
+
 const queries = {
   allAuthors,
   allBooks,
+  createBook,
 };
 
 export default queries;
