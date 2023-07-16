@@ -12,7 +12,7 @@ const Authors = (props) => {
     return <div>loading...</div>;
   }
 
-  const authors = query.data.allAuthors;
+  const authors = query.data?.allAuthors;
 
   return (
     <div>
