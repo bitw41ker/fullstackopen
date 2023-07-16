@@ -40,10 +40,20 @@ const createBook = gql`
   }
 `;
 
+const editAuthorBirthYear = gql`
+  mutation editAuthorBirthYear($name: String!, $born: Int!) {
+    editAuthor(name: $name, setBornTo: $born) {
+      name
+      born
+    }
+  }
+`;
+
 const queries = {
   allAuthors,
   allBooks,
   createBook,
+  editAuthorBirthYear,
 };
 
 export default queries;
