@@ -9,10 +9,19 @@ const BMI = [
   { threshold: Infinity, category: 'Obese (Class III)' },
 ];
 
-const calculateBmi = (height: number, weight: number): string => {
-  if (height <= 0 || weight <= 0) {
+const validate = (height: number, weight: number): void => {
+  if (
+    Number.isNaN(height) ||
+    height <= 0 ||
+    Number.isNaN(weight) ||
+    weight <= 0
+  ) {
     throw new Error('Invalid height or weight');
   }
+};
+
+export const calculateBmi = (height: number, weight: number): string => {
+  validate(height, weight);
 
   const bmi = weight / (height / 100) ** 2;
 
@@ -24,7 +33,10 @@ const calculateBmi = (height: number, weight: number): string => {
 };
 
 try {
-  const bmiCategory = calculateBmi(180, 75);
+  const weight = Number(process.argv[2]);
+  const height = Number(process.argv[3]);
+
+  const bmiCategory = calculateBmi(weight, height);
   console.log(bmiCategory);
 } catch (error) {
   console.error(error);

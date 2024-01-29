@@ -14,18 +14,22 @@ const RATINGS = [
   { rating: 3, description: 'good' },
 ];
 
-const calculateExercises = (
-  hours: number[],
-  target: number
-): ExerciseResult => {
+const validate = (hours: number[], target: number): void => {
   if (
     !Array.isArray(hours) ||
     hours.length === 0 ||
-    typeof target != 'number' ||
+    Number.isNaN(target) ||
     target < 0
   ) {
     throw Error('Wrong argument types!');
   }
+};
+
+export const calculateExercises = (
+  hours: number[],
+  target: number
+): ExerciseResult => {
+  validate(hours, target);
 
   const periodLength = hours.length;
   let trainingDays = 0;
@@ -65,7 +69,11 @@ const calculateExercises = (
 };
 
 try {
-  console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+  const target = Number(process.argv[2]);
+  const hours = process.argv.slice(3).map(Number);
+
+  const result = calculateExercises(hours, target);
+  console.log(result);
 } catch (e: unknown) {
   if (e instanceof Error) {
     console.log('Error: ', e.message);
