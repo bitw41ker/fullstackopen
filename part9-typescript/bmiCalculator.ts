@@ -20,7 +20,7 @@ const validate = (height: number, weight: number): void => {
   }
 };
 
-export const calculateBmi = (height: number, weight: number): string => {
+const calculateBmi = (height: number, weight: number): string => {
   validate(height, weight);
 
   const bmi = weight / (height / 100) ** 2;
@@ -32,12 +32,4 @@ export const calculateBmi = (height: number, weight: number): string => {
   throw new Error('BMI calculation failed');
 };
 
-try {
-  const weight = Number(process.argv[2]);
-  const height = Number(process.argv[3]);
-
-  const bmiCategory = calculateBmi(weight, height);
-  console.log(bmiCategory);
-} catch (error) {
-  console.error(error);
-}
+export default calculateBmi;
