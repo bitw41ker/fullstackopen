@@ -9,7 +9,7 @@ interface ExerciseResult {
 }
 
 const RATINGS = [
-  { rating: 1, description: 'poor' },
+  { rating: 1, description: 'bad' },
   { rating: 2, description: 'not too bad but could be better' },
   { rating: 3, description: 'good' },
 ];
@@ -25,7 +25,7 @@ const validate = (hours: number[], target: number): void => {
   }
 };
 
-export const calculateExercises = (
+const calculateExercises = (
   hours: number[],
   target: number
 ): ExerciseResult => {
@@ -68,16 +68,4 @@ export const calculateExercises = (
   };
 };
 
-try {
-  const target = Number(process.argv[2]);
-  const hours = process.argv.slice(3).map(Number);
-
-  const result = calculateExercises(hours, target);
-  console.log(result);
-} catch (e: unknown) {
-  if (e instanceof Error) {
-    console.log('Error: ', e.message);
-  } else {
-    console.log('Error: ', e);
-  }
-}
+export default calculateExercises;
