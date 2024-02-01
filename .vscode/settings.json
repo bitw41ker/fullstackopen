@@ -1,3 +1,6 @@
 {
-  "eslint.workingDirectories": ["part9-typescript/first-steps"]
+  "eslint.workingDirectories": [
+    "part9-typescript/patientor/server",
+    "part9-typescript/first-steps"
+  ]
 }
