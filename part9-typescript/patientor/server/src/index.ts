@@ -1,6 +1,11 @@
 import express from 'express';
+import diagnosesRouter from './routes/diagnoses';
+
+const PORT = 3001;
 
 const app = express();
+
+app.use(express.json());
 
 app.use((_req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -12,9 +17,7 @@ app.use((_req, res, next) => {
   next();
 });
 
-app.use(express.json());
-
-const PORT = 3001;
+app.use('/api/diagnoses', diagnosesRouter);
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
