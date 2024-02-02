@@ -9,25 +9,14 @@ router.get('/', (_req, res) => {
 
 router.post('/', (req, res) => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-
-    const newPatient = patientService.addPatient(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      name,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      dateOfBirth,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      ssn,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      gender,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      occupation
-    );
-
+    const newPatient = patientService.addPatient(req.body);
     res.json(newPatient);
   } catch (error: unknown) {
-    res.status(400).send((error as Error).message);
+    if (error instanceof Error) {
+      res.status(400).send(error.message);
+    } else {
+      res.status(400).send('Error: unknown error occurred.');
+    }
   }
 });
 
