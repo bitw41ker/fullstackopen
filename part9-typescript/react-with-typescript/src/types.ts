@@ -20,7 +20,13 @@ interface CoursePartBackground extends CoursePartDesc {
   kind: 'background';
 }
 
+interface CoursePartSpecial extends CoursePartDesc {
+  requirements: string[];
+  kind: 'special';
+}
+
 export type CoursePart =
   | CoursePartBasic
   | CoursePartGroup
-  | CoursePartBackground;
+  | CoursePartBackground
+  | CoursePartSpecial;

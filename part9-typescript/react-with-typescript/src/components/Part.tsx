@@ -35,8 +35,25 @@ const Part = ({ part }: CourseProps) => {
       partKindContent = (
         <>
           {baseContent}
-          <p>Description:: {part.description}</p>
+          <p>Description: {part.description}</p>
           <p>Material: {part.backgroundMaterial}</p>
+        </>
+      );
+      break;
+    case 'special':
+      partKindContent = (
+        <>
+          {baseContent}
+          <p>Description: {part.description}</p>
+          <p>
+            Requirements:{' '}
+            {part.requirements.map((req, ind) => (
+              <span key={ind}>
+                {req}
+                {ind !== part.requirements.length - 1 ? ', ' : ''}
+              </span>
+            ))}
+          </p>
         </>
       );
       break;
