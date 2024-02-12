@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { DiaryEntry as DiaryEntryType } from '../types';
 import { getAllDiaryEntries } from '../service';
 
-export const useDiaryEntries = () => {
+export const useDiaryEntries = (newEntry: object) => {
   const [entries, setEntries] = useState<DiaryEntryType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,7 @@ export const useDiaryEntries = () => {
     fetchEntries();
 
     return () => abortController.abort();
-  }, []);
+  }, [newEntry]);
 
   return { entries, loading, error };
 };

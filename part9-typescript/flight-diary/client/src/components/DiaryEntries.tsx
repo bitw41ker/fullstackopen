@@ -1,9 +1,12 @@
 import DiaryEntry from './DiaryEntry';
 import { useDiaryEntries } from '../hooks/useFetchDiaryEntries';
 
-const DiaryEntries = () => {
-  const { entries, loading, error } = useDiaryEntries();
+interface DiaryEntriesProps {
+  newDiaryEntry: object;
+}
 
+const DiaryEntries = ({ newDiaryEntry }: DiaryEntriesProps) => {
+  const { entries, loading, error } = useDiaryEntries(newDiaryEntry);
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
