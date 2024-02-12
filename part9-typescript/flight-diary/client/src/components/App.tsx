@@ -1,5 +1,11 @@
+import DiaryEntries from './DiaryEntries';
+
 function App() {
-  return <></>;
+  return (
+    <main>
+      <DiaryEntries />
+    </main>
+  );
 }
 
 export default App;
