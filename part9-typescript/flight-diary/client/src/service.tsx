@@ -1,10 +1,10 @@
-import { DiaryEntry } from './types';
+import { DiaryEntry, newDiaryEntry } from './types';
 
 const DIARIES_URL = '/api/diaries';
 
-export async function getAllDiaryEntries(
+export const getAllDiaryEntries = async (
   abortController: AbortController
-): Promise<DiaryEntry[]> {
+): Promise<DiaryEntry[]> => {
   const res = await fetch(DIARIES_URL, {
     signal: abortController.signal,
   });
@@ -15,4 +15,14 @@ export async function getAllDiaryEntries(
 
   const data: DiaryEntry[] = await res.json();
   return data;
-}
+};
+
+export const postDiaryEntries = (entry: newDiaryEntry) => {
+  fetch(DIARIES_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(entry),
+  });
+};
