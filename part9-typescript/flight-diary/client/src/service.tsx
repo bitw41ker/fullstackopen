@@ -17,12 +17,23 @@ export const getAllDiaryEntries = async (
   return data;
 };
 
-export const postDiaryEntries = (entry: newDiaryEntry) => {
-  fetch(DIARIES_URL, {
+export const postDiaryEntries = async (entry: newDiaryEntry) => {
+  const res = await fetch(DIARIES_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(entry),
   });
+
+  if (!res.ok) {
+    if (res.status === 400) {
+      const error = await res.text();
+      return { error };
+    } else {
+      throw new Error('Failed to post');
+    }
+  }
+
+  return res.json();
 };
