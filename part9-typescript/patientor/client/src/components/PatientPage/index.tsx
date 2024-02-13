@@ -5,11 +5,21 @@ import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 
 import patientService from '../../services/patients';
-import { Patient, Gender } from '../../types';
+import { Patient, Gender, Diagnosis } from '../../types';
 
-const PatientPage = () => {
+interface PatientPageProps {
+  diagnoses: Diagnosis[];
+}
+
+const PatientPage = ({ diagnoses }: PatientPageProps) => {
   const [patient, setPatient] = useState<Patient>();
   const { id } = useParams();
+
+  const getDiagnosisDescription = (code: string) => {
+    const diagnosis = diagnoses.find((d) => d.code === code);
+
+    return diagnosis ? diagnosis.name : '';
+  };
 
   useEffect(() => {
     const getPatient = async () => {
@@ -45,7 +55,9 @@ const PatientPage = () => {
                 {e.diagnosisCodes && (
                   <ul>
                     {e.diagnosisCodes.map((dc) => (
-                      <li key={dc}>{dc}</li>
+                      <li key={dc}>
+                        {dc} {getDiagnosisDescription(dc)}
+                      </li>
                     ))}
                   </ul>
                 )}
