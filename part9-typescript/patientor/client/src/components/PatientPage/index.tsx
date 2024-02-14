@@ -5,7 +5,9 @@ import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 
 import patientService from '../../services/patients';
+import EntryDetails from './EntryDetails';
 import { Patient, Gender, Diagnosis } from '../../types';
+import './index.css';
 
 interface PatientPageProps {
   diagnoses: Diagnosis[];
@@ -14,12 +16,6 @@ interface PatientPageProps {
 const PatientPage = ({ diagnoses }: PatientPageProps) => {
   const [patient, setPatient] = useState<Patient>();
   const { id } = useParams();
-
-  const getDiagnosisDescription = (code: string) => {
-    const diagnosis = diagnoses.find((d) => d.code === code);
-
-    return diagnosis ? diagnosis.name : '';
-  };
 
   useEffect(() => {
     const getPatient = async () => {
@@ -43,27 +39,13 @@ const PatientPage = ({ diagnoses }: PatientPageProps) => {
           <div>ssn: {patient.ssn}</div>
           <div>occupation: {patient.occupation}</div>
 
-          <h3>Entries:</h3>
+          <section>
+            <h3>Entries:</h3>
 
-          <div>
             {patient.entries.map((e) => (
-              <div key={e.id}>
-                <div>
-                  {e.date} {e.description}
-                </div>
-                <br />
-                {e.diagnosisCodes && (
-                  <ul>
-                    {e.diagnosisCodes.map((dc) => (
-                      <li key={dc}>
-                        {dc} {getDiagnosisDescription(dc)}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <EntryDetails entry={e} diagnoses={diagnoses} key={e.id} />
             ))}
-          </div>
+          </section>
         </>
       )}
     </article>
