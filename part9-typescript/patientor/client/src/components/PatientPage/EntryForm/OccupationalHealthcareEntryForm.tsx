@@ -34,6 +34,14 @@ const OccupationalHealthcareEntryForm = ({
     const sickLeaveEndDate = data.get('sickLeaveEndDate') as string;
     const diagnosisCodesString = data.get('diagnosisCodes') as string;
 
+    if (
+      (sickLeaveStartDate && !sickLeaveEndDate) ||
+      (!sickLeaveStartDate && sickLeaveEndDate)
+    ) {
+      setError('Sickleave start and end dates are required');
+      return;
+    }
+
     const entry: EntryWithoutId = {
       type: 'OccupationalHealthcare',
       description,
@@ -68,19 +76,19 @@ const OccupationalHealthcareEntryForm = ({
       <form onSubmit={formSubmit} className="EntryForm-input-form">
         <div>
           <label htmlFor="description">Description</label>
-          <input type="text" id="description" name="description" />
+          <input type="text" id="description" name="description" required />
         </div>
         <div>
           <label htmlFor="date">Date</label>
-          <input type="date" id="date" name="date" />
+          <input type="date" id="date" name="date" required />
         </div>
         <div>
           <label htmlFor="specialist">Specialist</label>
-          <input type="text" id="specialist" name="specialist" />
+          <input type="text" id="specialist" name="specialist" required />
         </div>
         <div>
           <label htmlFor="employerName">Employer name</label>
-          <input type="text" id="employerName" name="employerName" />
+          <input type="text" id="employerName" name="employerName" required />
         </div>
         <div>
           <label htmlFor="sickLeaveStartDate">Sick leave start date</label>

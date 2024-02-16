@@ -59,15 +59,15 @@ const HospitalEntryForm = ({ onSubmit, onCancel }: HospitalEntryFormProps) => {
       <form onSubmit={formSubmit} className="EntryForm-input-form">
         <div>
           <label htmlFor="description-input">Description</label>
-          <input id="description-input" name="description" />
+          <input id="description-input" name="description" required />
         </div>
         <div>
           <label htmlFor="date-input">Date</label>
-          <input id="date-input" name="date" type="date" />
+          <input id="date-input" name="date" type="date" required />
         </div>
         <div>
           <label htmlFor="specialist-input">Specialist</label>
-          <input id="specialist-input" name="specialist" />
+          <input id="specialist-input" name="specialist" required />
         </div>
         <div>
           <label htmlFor="diagnosisCodes-input">Diagnosis Codes</label>
@@ -75,11 +75,20 @@ const HospitalEntryForm = ({ onSubmit, onCancel }: HospitalEntryFormProps) => {
         </div>
         <div>
           <label htmlFor="dischargeDate-input">Discharge Date</label>
-          <input id="dischargeDate-input" name="dischargeDate" type="date" />
+          <input
+            id="dischargeDate-input"
+            name="dischargeDate"
+            type="date"
+            required
+          />
         </div>
         <div>
           <label htmlFor="dischargeCriteria-input">Discharge Criteria</label>
-          <input id="dischargeCriteria-input" name="dischargeCriteria" />
+          <input
+            id="dischargeCriteria-input"
+            name="dischargeCriteria"
+            required
+          />
         </div>
         <div>
           <button type="submit">Add</button>

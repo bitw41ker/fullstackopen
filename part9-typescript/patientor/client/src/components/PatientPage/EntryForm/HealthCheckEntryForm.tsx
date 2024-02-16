@@ -29,7 +29,7 @@ const HealthCheckEntryForm = ({
     const date = data.get('date') as string;
     const specialist = data.get('specialist') as string;
     const diagnosisCodesString = data.get('diagnosisCodes') as string;
-    const healthCheckRating = Number(data.get('healthCheckRating'));
+    const healthCheckRating = parseInt(data.get('healthCheckRating') as string);
 
     const entry: EntryWithoutId = {
       type: 'HealthCheck',
@@ -60,15 +60,15 @@ const HealthCheckEntryForm = ({
       <form onSubmit={formSubmit} className="EntryForm-input-form">
         <div>
           <label htmlFor="description-input">Description</label>
-          <input id="description-input" name="description" />
+          <input id="description-input" name="description" required />
         </div>
         <div>
           <label htmlFor="date-input">Date</label>
-          <input id="date-input" name="date" type="date" />
+          <input id="date-input" name="date" type="date" required />
         </div>
         <div>
           <label htmlFor="specialist-input">Specialist</label>
-          <input id="specialist-input" name="specialist" />
+          <input id="specialist-input" name="specialist" required />
         </div>
         <div>
           <label htmlFor="diagnosisCodes-input">Diagnosis Codes</label>
@@ -76,8 +76,15 @@ const HealthCheckEntryForm = ({
         </div>
         <div>
           <label htmlFor="healthcheck-rating-input">Health Check Rating</label>
-          <select id="healthcheck-rating-input" name="healthCheckRating">
-            <option value="no-value">--Please choose an option--</option>
+          <select
+            id="healthcheck-rating-input"
+            name="healthCheckRating"
+            required
+            defaultValue=""
+          >
+            <option value="" disabled>
+              --Please choose an option--
+            </option>
             <option value={0}>Healthy</option>
             <option value={1}>Low Risk</option>
             <option value={2}>High Risk</option>
