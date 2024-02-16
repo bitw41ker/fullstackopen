@@ -74,3 +74,19 @@ export const assertNever = (value: never): never => {
     `Unhandled discriminated union member: ${JSON.stringify(value)}`
   );
 };
+
+export type EntryForm = 'HealthCheck' | 'OccupationalHealthcare' | 'Hospital';
+
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+// Define Entry without the 'id' property
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+
+export interface Response {
+  status: 'success' | 'error';
+  message?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any;
+}

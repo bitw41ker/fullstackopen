@@ -6,7 +6,8 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 
 import patientService from '../../services/patients';
 import EntryDetails from './EntryDetails';
-import { Patient, Gender, Diagnosis } from '../../types';
+import EntryFrom from './EntryForm';
+import { Patient, Gender, Diagnosis, EntryForm, Entry } from '../../types';
 import './index.css';
 
 interface PatientPageProps {
@@ -15,7 +16,15 @@ interface PatientPageProps {
 
 const PatientPage = ({ diagnoses }: PatientPageProps) => {
   const [patient, setPatient] = useState<Patient>();
+  const [selectedEntry, setSelectedEntry] = useState<EntryForm | null>(null);
   const { id } = useParams();
+
+  const addEntry = (entry: Entry) => {
+    if (patient) {
+      patient.entries.push(entry);
+      setPatient({ ...patient });
+    }
+  };
 
   useEffect(() => {
     const getPatient = async () => {
@@ -38,6 +47,21 @@ const PatientPage = ({ diagnoses }: PatientPageProps) => {
 
           <div>ssn: {patient.ssn}</div>
           <div>occupation: {patient.occupation}</div>
+
+          <section>
+            <h3>Add new entry</h3>
+
+            {!selectedEntry && (
+              <button onClick={() => setSelectedEntry('HealthCheck')}>
+                Health Check
+              </button>
+            )}
+            <EntryFrom
+              formType={selectedEntry}
+              onSubmit={addEntry}
+              onCancel={() => setSelectedEntry(null)}
+            />
+          </section>
 
           <section>
             <h3>Entries:</h3>

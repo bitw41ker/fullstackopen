@@ -1,0 +1,24 @@
+.EntryForm-input-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  gap: 10px;
+}
+
+.EntryForm-input-form button {
+  width: 100px;
+  margin: 10px;
+}
+
+.EntryForm-input-form input {
+  width: 100%;
+}
+
+.EntryForm-button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.EntryForm-error {
+  color: red;
+}
