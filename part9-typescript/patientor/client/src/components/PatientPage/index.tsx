@@ -52,9 +52,19 @@ const PatientPage = ({ diagnoses }: PatientPageProps) => {
             <h3>Add new entry</h3>
 
             {!selectedEntry && (
-              <button onClick={() => setSelectedEntry('HealthCheck')}>
-                Health Check
-              </button>
+              <div>
+                <button onClick={() => setSelectedEntry('HealthCheck')}>
+                  Health Check
+                </button>
+                <button onClick={() => setSelectedEntry('Hospital')}>
+                  Hospital
+                </button>
+                <button
+                  onClick={() => setSelectedEntry('OccupationalHealthcare')}
+                >
+                  Occupational Healthcare
+                </button>
+              </div>
             )}
             <EntryFrom
               formType={selectedEntry}

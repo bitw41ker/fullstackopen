@@ -20,9 +20,14 @@ const EntryFrom: React.FC<EntryFormProps> = ({
     case 'HealthCheck':
       return <HealthCheckEntryForm onSubmit={onSubmit} onCancel={onCancel} />;
     case 'OccupationalHealthcare':
-      return <OccupationalHealthcareEntryForm />;
+      return (
+        <OccupationalHealthcareEntryForm
+          onSubmit={onSubmit}
+          onCancel={onCancel}
+        />
+      );
     case 'Hospital':
-      return <HospitalEntryForm />;
+      return <HospitalEntryForm onSubmit={onSubmit} onCancel={onCancel} />;
     default:
       return null;
   }

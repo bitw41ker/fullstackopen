@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   max-width: 400px;
-  gap: 10px;
+  gap: 15px;
 }
 
 .EntryForm-input-form button {
@@ -14,11 +14,18 @@
   width: 100%;
 }
 
-.EntryForm-button-group {
-  display: flex;
-  justify-content: space-between;
-}
-
 .EntryForm-error {
   color: red;
+}
+
+.EntryForm-input-form > div:not(:last-child) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.EntryForm-button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
